@@ -141,34 +141,6 @@ public class CasseBrique {
 					if (collision.isCollision()) {
 						brique.setVisible(false);
 						briqueBreaked++;
-//						this.getBalle().setxBalleCoefDeplacement(-1
-//								* this.getBalle().getxBalleCoefDeplacement());
-						this.getBalle().setyBalleCoefDeplacement(-1
-								* this.getBalle().getyBalleCoefDeplacement());
-						
-////						System.out.println(collision.getCollisionTypeH() + " " + collision.getCollisionTypeV());
-//						
-//						if (collision.getCollisionTypeH() != null) {
-//	//						if (collision.getCollisionTypeH().equals(CollisionType.Left)) {
-//								this.getBalle().setxBalleCoefDeplacement(-1
-//										* this.getBalle().getxBalleCoefDeplacement());
-//	//						} else {
-//	//							this.getBalle().setxBalleCoefDeplacement(1
-//	//									* this.getBalle().getxBalleCoefDeplacement());
-//	//						}
-//							listSound.add(this.getSoundClash());
-//						}
-//						
-//						if (collision.getCollisionTypeV() != null) {
-//	//						if (collision.getCollisionTypeV().equals(CollisionType.Up)) {
-//	//							this.getBalle().setyBalleCoefDeplacement(1
-//	//									* this.getBalle().getyBalleCoefDeplacement());
-//	//						} else {
-//								this.getBalle().setyBalleCoefDeplacement(-1
-//										* this.getBalle().getyBalleCoefDeplacement());
-//	//						}
-//							listSound.add(this.getSoundClash());
-//						}
 					} else {
 						listImage.add(brique);
 					}
@@ -181,8 +153,6 @@ public class CasseBrique {
 		
 		if (!this.isGameOver() && isStillBalle) {
 			this.getBalle().setPosition(this.getBalle().getNextPoint());
-//			this.getBalle().setX(this.getBalle().getX() + this.getBalle().getxBalleCoefDeplacement());
-//			this.getBalle().setY(this.getBalle().getY() + this.getBalle().getyBalleCoefDeplacement());
 		} else {
 			if (this.isGameOverFirstUse()) {
 				listSound.add(this.getSoundGameOver());

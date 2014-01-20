@@ -13,9 +13,9 @@ import android.widget.EditText;
 public class BricBreackerMain extends Activity {
 
 	private int margeBarre = 200;
-	private int margeBrique = 250;
-	private int nbrBrique = 1;
-	private int initialSpeed = 8;
+	private int margeBrique = 20;
+	private int nbrBrique = 150;
+	private int initialSpeed = 5;
 	
 	private EditText etMargeBrique;
 	private EditText etNombreBriques;

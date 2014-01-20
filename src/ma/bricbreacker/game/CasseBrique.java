@@ -5,10 +5,12 @@ import java.util.List;
 
 import ma.bricbreacker.model.Balle;
 import ma.bricbreacker.model.Barre;
+import ma.bricbreacker.model.Block;
 import ma.bricbreacker.model.Brique;
 import ma.bricbreacker.model.Collision;
 import ma.bricbreacker.model.CollisionType;
 import ma.bricbreacker.model.Image;
+import ma.bricbreacker.model.Patterne;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
@@ -16,7 +18,6 @@ public class CasseBrique {
 
 	private Texture balleTexture = new Texture("data/balle_16.png");
 	private Texture barreTexture = new Texture("data/barre.png");
-	private Texture briqueTexture = new Texture("data/brique.png");
 	private Texture imageGameOverTexture = new Texture("data/gameover.png");
 	private Texture imageBackgroundTexture = new Texture("data/back.png");
 	
@@ -24,8 +25,8 @@ public class CasseBrique {
 	private Barre barre = new Barre(barreTexture);
 	private Image imageGameOver = new Image(imageGameOverTexture);
 	private Image imageBackground = new Image(imageBackgroundTexture);
-	
-	private List<Brique> listImageBrique = new ArrayList<Brique>();
+
+	private Patterne patterne;
 
 	private Sound soundGameOver;
 	private Sound soundClash;
@@ -41,9 +42,6 @@ public class CasseBrique {
 	private boolean gameOverFirstUse = true;
 	private boolean isGameOver = false;
 
-	private int margeBrique = 250 ;
-	private int nbrCols;
-	private int nbrBrique = 1;
 	
 	private float initialSpeed = 8;
 	private float xBalleCoefDeplacementTemp = initialSpeed;
@@ -59,8 +57,6 @@ public class CasseBrique {
 		this.w = w;
 		this.h = h;
 		this.marge = margeBarre;
-		this.margeBrique = margeBrique;
-		this.nbrBrique = nbrBrique;
 		this.initialSpeed = initialSpeed;
 		this.xBalleCoefDeplacementTemp = initialSpeed;
 		this.yBalleCoefDeplacementTemp = initialSpeed;
@@ -72,27 +68,11 @@ public class CasseBrique {
 		this.getBalle().setxBalleCoefDeplacement(xBalleCoefDeplacementTemp);
 		this.getBalle().setyBalleCoefDeplacement(yBalleCoefDeplacementTemp);
 		
-		nbrCols = (int) w / (briqueTexture.getWidth() + margeBrique);
 		
-		int currentCols = 0;
-		
-		for (int i = 0; i < nbrBrique; i++) {
-			
-			if ((i % nbrCols) == 0) {
-				currentCols++;
-			}
-			
-			Brique brique = new Brique(briqueTexture);
-			brique.setX(margeBrique + ((i % nbrCols) * (brique.getWidth() + margeBrique)));
-			brique.setY(h - (currentCols * (brique.getHeight() + margeBrique)));
-
-			brique.makeLines();
-			
-			listImageBrique.add(brique);
-		}
+		patterne = new Patterne(this.getW(), this.getH(), margeBrique, nbrBrique);
 
 		this.getImageBackground().setX(0);
-		this.getImageBackground().setY(0);
+		this.getImageBackground().setY(this.getH());
 	}
 
 	public void renderGame() {
@@ -130,9 +110,7 @@ public class CasseBrique {
 				listSound.add(this.getSoundClash());
 			}
 	
-			boolean isHitBriqueX = false;
-			boolean isHitBriqueY = false;
-			for (Brique brique : listImageBrique) {
+			for (Brique brique : patterne.getListImageBrique()) {
 				if (brique.isVisible()) {
 					isStillBalle = true;
 					
@@ -146,10 +124,19 @@ public class CasseBrique {
 					}
 				}
 			}
+	
+			for (Block block : patterne.getListImageBlock()) {
+					Collision collision = new Collision(balle, block);
+					collision.isCollision();
+					listImage.add(block);
+			}
 		}
 
 		listImage.add(this.getBarre()); // #17
 		listImage.add(this.getBalle()); // #17
+		
+		// TODO 
+		isStillBalle = true;
 		
 		if (!this.isGameOver() && isStillBalle) {
 			this.getBalle().setPosition(this.getBalle().getNextPoint());
@@ -191,14 +178,6 @@ public class CasseBrique {
 
 	public void setImageBackground(Image imageBackground) {
 		this.imageBackground = imageBackground;
-	}
-
-	public List<Brique> getListImageBrique() {
-		return listImageBrique;
-	}
-
-	public void setListImageBrique(List<Brique> listImageBrique) {
-		this.listImageBrique = listImageBrique;
 	}
 
 	public Sound getSoundGameOver() {
@@ -300,5 +279,4 @@ public class CasseBrique {
 	public void setHitOnWalls(int hitOnWalls) {
 		this.hitOnWalls = hitOnWalls;
 	}
-
 }

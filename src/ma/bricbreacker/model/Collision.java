@@ -34,7 +34,7 @@ public class Collision {
 		this.collisionTypeH = collisionTypeH;
 	}
 
-	public Collision(Balle balle, Brique brique) {
+	public Collision(Balle balle, Image brique) {
 		Polygon polygonBalle = new Polygon(new float[] { balle.getA().getX(),
 				balle.getA().getY(), balle.getB().getX(), balle.getB().getY(),
 				balle.getC().getX(), balle.getC().getY(), balle.getD().getX(),
